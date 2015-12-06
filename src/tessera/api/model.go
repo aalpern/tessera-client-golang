@@ -26,6 +26,24 @@ type Dashboard struct {
     Category string `json:"category"`
     Summary string `json:"summary"`
     Description string `json:"description"`
-    // Definition Definition `json:"definition"`
+    Definition Definition `json:"definition"`
     Tags []Tag `json:"tags"`
+}
+
+type DashboardItem struct {
+    ItemID string `json:"item_id"`
+    ItemType string `json:"item_type"`
+    CssClass string `json:"css_class"`
+    Height uint8 `json:"height"`
+    Style string `json:"style"`
+    Title string `json:"title"`
+}
+
+type Container struct {
+    Items []DashboardItem `json:"items"`
+    *DashboardItem
+}
+
+type Definition struct {
+    *Container
 }

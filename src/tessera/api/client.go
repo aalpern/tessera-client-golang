@@ -70,11 +70,33 @@ func (client *Client) getDashboards(req *http.Request, definition bool) ([]Dashb
     defer res.Body.Close()
 
     // Read and parse the response body
-    if err:= json.NewDecoder(res.Body).Decode(&dashboards); err != nil {
-        return dashboards, err
+    err = json.NewDecoder(res.Body).Decode(&dashboards)
+    return dashboards, nil
+}
+
+//
+// Fetch a single dashboard by ID.
+//
+func (client *Client) GetDashboard(id int32, definition bool) (Dashboard, error) {
+    var dashboard = Dashboard{}
+
+    req, err := client.newRequest("GET", fmt.Sprintf("/api/dashboard/%d", id), nil)
+    if err != nil {
+        return dashboard, err
     }
 
-    return dashboards, nil
+    if definition {
+        req.URL.RawQuery = "definition=true"
+    }
+
+    res, err := client.Do(req)
+    if err != nil {
+        return dashboard, err
+    }
+    defer res.Body.Close()
+
+    err = json.NewDecoder(res.Body).Decode(&dashboard)
+    return dashboard, err
 }
 
 //
@@ -132,6 +154,10 @@ func (client *Client) ListDashboardsByCategory(category string, definition bool)
 // Auxiliary API Methods
 // -----------------------------------------------------------------------------
 
+//
+// List all tags that exist on dashboards, and the number of
+// dashboards tagged with each one.
+//
 func (client *Client) ListTags() ([]Tag, error) {
     var tags = make([]Tag, 0)
 
@@ -150,6 +176,10 @@ func (client *Client) ListTags() ([]Tag, error) {
     return tags, err
 }
 
+//
+// List all categories that dashboards are organized into, and the
+// number of dashboards in each one.
+//
 func (client *Client) ListCategories() ([]Category, error) {
     var categories = make([]Category, 0)
 
