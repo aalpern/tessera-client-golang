@@ -1,6 +1,14 @@
 package api
 
-// Placeholder
+type Tag struct {
+    ID int32 `json:"id"`
+    Href string `json:"href"`
+    Name string `json:"name"`
+    Description string `json:"description"`
+    Color string `json:"color"`
+    Count int32 `json:"count"`
+}
+
 type Dashboard struct {
     ID int32 `json:"id"`
     Href string `json:"href"`
@@ -14,5 +22,5 @@ type Dashboard struct {
     Summary string `json:"summary"`
     Description string `json:"description"`
     // Definition Definition `json:"definition"`
-    // Tags []Tag `json:"tags"`
+    Tags []Tag `json:"tags"`
 }
