@@ -9,6 +9,11 @@ type Tag struct {
     Count int32 `json:"count"`
 }
 
+type Category struct {
+    Name string `json:"name"`
+    Count int32 `json:"count"`
+}
+
 type Dashboard struct {
     ID int32 `json:"id"`
     Href string `json:"href"`

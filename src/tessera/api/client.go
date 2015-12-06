@@ -51,6 +51,10 @@ func (client *Client) newRequest(method, path string, body io.Reader) (*http.Req
     return request, nil
 }
 
+// -----------------------------------------------------------------------------
+// Dashboard methods
+// -----------------------------------------------------------------------------
+
 func (client *Client) getDashboards(req *http.Request, definition bool) ([]Dashboard, error) {
     var dashboards = make([]Dashboard, 0)
 
@@ -122,4 +126,44 @@ func (client *Client) ListDashboardsByCategory(category string, definition bool)
     }
 
     return client.getDashboards(req, definition)
+}
+
+// -----------------------------------------------------------------------------
+// Auxiliary API Methods
+// -----------------------------------------------------------------------------
+
+func (client *Client) ListTags() ([]Tag, error) {
+    var tags = make([]Tag, 0)
+
+    req, err := client.newRequest("GET", "/api/tag/", nil)
+    if err != nil {
+        return tags, err
+    }
+
+    res, err := client.Do(req)
+    if err != nil {
+        return tags, err
+    }
+    defer res.Body.Close()
+
+    err = json.NewDecoder(res.Body).Decode(&tags)
+    return tags, err
+}
+
+func (client *Client) ListCategories() ([]Category, error) {
+    var categories = make([]Category, 0)
+
+    req, err := client.newRequest("GET", "/api/dashboard/category/", nil)
+    if err != nil {
+        return categories, err
+    }
+
+    res, err := client.Do(req)
+    if err != nil {
+        return categories, err
+    }
+    defer res.Body.Close()
+
+    err = json.NewDecoder(res.Body).Decode(&categories)
+    return categories, err
 }
