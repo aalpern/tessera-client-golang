@@ -1,5 +1,7 @@
 package api
 
+type RawFields map[string]interface{}
+
 type Tag struct {
     ID int32 `json:"id"`
     Href string `json:"href"`
@@ -19,8 +21,10 @@ type Dashboard struct {
     Href string `json:"href"`
     ViewHref string `json:"view_href"`
     DefinitionHref string `json:"definition_href"`
-    // creation_date string `json:"creation_date"`
-    // last_modified_date string `json:"last_modified_date"`
+    // string for now
+    creation_date string `json:"creation_date"`
+    // string for now
+    last_modified_date string `json:"last_modified_date"`
     ImportedFrom string `json:"imported_from"`
     Title string `json:"title"`
     Category string `json:"category"`
@@ -40,10 +44,17 @@ type DashboardItem struct {
 }
 
 type Container struct {
+    /* How to represent polymorphic dashboard items here is tricky */
     Items []DashboardItem `json:"items"`
     *DashboardItem
 }
 
+type Query struct {
+    Name string `json:"name"`
+    Targets []string `json:"targets"`
+}
+
 type Definition struct {
+    Queries map[string]Query `json:"queries"`
     *Container
 }
